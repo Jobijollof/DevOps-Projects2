@@ -52,11 +52,94 @@ ls /var/lib/jenkins/jobs/ansible/builds/<build_number>/archive/
 
 Note: Trigger Jenkins project execution only for /main (master) branch.
 
+Follow the steps [here](https://github.com/Jobijollof/DevOps-Projects/blob/main/Project%209%20Introduction%20to%20Jenkins/README.md) to setup Jenkins.  
+
+After creating your first free style project, do the following,
+
+- Click on configure on the left
+
+- Click on git source code management and place the Url of Ansible-config-mgt repo
+
+![config](./images/ansible-3.png)
+
+![config](./images/master-4.png)
+
+![config](./images/build-trigger5.png)
+
+![config](./images/post-build-6.png)
+
+- Click on build now
+
+![config](./images/7.png)
+
+- Errors
+
+![config](./images/error-8.png)
+
+- Error message
+
+![config](./images/ansible-9.png)
+
+- Go back to configure and make this change
+
+![config](./images/ansible-10.png)
+
+- Successful build
+
+![config](./images/ansible-11.png)
+
 Now your setup will look like this:
 
 ![ansible](./images/ansible-diagram2.png)
 
+- Trigger a change in the repo Ansible-config-mgt. Edit the README.md
+
+observation build wasnt triggered automatically i have to still build manaually.
+
+[Article helped](https://www.edureka.co/community/49753/auto-build-job-jenkins-there-change-code-github-repository)
+
+
 ***Tip*** Every time you stop/start your Jenkins-Ansible server – you have to reconfigure GitHub webhook to a new IP address, in order to avoid it, it makes sense to allocate an Elastic IP to your Jenkins-Ansible server (This was done in Project 10). Note that Elastic IP is free only when it is being allocated to an EC2 Instance, so do not forget to release Elastic IP once you terminate your EC2 Instance.
+
+By default, the artifacts are stored on the Jenkins server locally to check that,
+
+```
+ls /var/lib/jenkins/jobs/job-name/builds/build_number/archive/
+
+ls /var/lib/jenkins/jobs/project-tooling/builds/3/archive/
+
+```
+![ansible](./images/ansible-12.png)
+
+## BEGIN ANSIBLE DEVELOPMENT
+
+In your ansible-config-mgt GitHub repository, create a new branch that will be used for development of a new feature.
+
+- Tip: Give your branches descriptive and comprehensive names, for example, if you use Jira or Trello as a project management tool – include ticket number (e.g. PRJ-145) in the
+name of your branch and add a topic and a brief description what this branch is about – a bugfix, hotfix, feature, release (e.g. feature/prj-145-lvm)
+
+- Checkout the newly created feature branch to your local machine and start building your code and directory structure
+
+- Create a directory and name it playbooks – it will be used to store all your playbook files.
+
+- Create a directory and name it inventory – it will be used to keep your hosts organised.
+
+- Within the playbooks folder, create your first playbook, and name it common.yml
+
+- Within the inventory folder, create an inventory file (.yml) for each environment (Development, Staging Testing and Production) dev, staging, uat, and prod respectively.
+
+
+
+Step 4 – Set up an Ansible Inventory
+An Ansible inventory file defines the hosts and groups of hosts upon which commands, modules, and tasks in a playbook operate. Since our intention is to execute Linux commands on remote hosts, and ensure that it is the intended configuration on a particular server that occurs. It is important to have a way to organize our hosts in such an Inventory.
+Save below inventory structure in the inventory/dev file to start configuring your development servers. Ensure to replace the IP addresses according to your own setup.
+Note: Ansible uses TCP port 22 by default, which means it needs to ssh into target servers from Jenkins-Ansible host – for this you can implement the concept of ssh-agent. Now you need to import your key into ssh-agent:
+To learn how to setup SSH agent and connect VS Code to your Jenkins-Ansible instance, please see this video:
+For Windows users – ssh-agent on windows
+
+
+
+
 
 
 

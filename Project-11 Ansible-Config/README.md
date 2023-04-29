@@ -94,7 +94,7 @@ Now your setup will look like this:
 
 - Trigger a change in the repo Ansible-config-mgt. Edit the README.md
 
-observation build wasnt triggered automatically i have to still build manaually.
+observation build wasn't triggered automatically i have to still build manually.
 
 [Article helped](https://www.edureka.co/community/49753/auto-build-job-jenkins-there-change-code-github-repository)
 
@@ -110,6 +110,22 @@ ls /var/lib/jenkins/jobs/project-tooling/builds/3/archive/
 
 ```
 ![ansible](./images/ansible-12.png)
+
+### Prepare your development environment using Visual Studio Code
+
+First part of ‘DevOps’ is ‘Dev’, which means you will require to write some codes and you shall have proper tools that 
+will make your coding and debugging comfortable – you need an [Integrated development environment (IDE)](https://en.wikipedia.org/wiki/Integrated_development_environment) or [Source-code Editor](https://en.wikipedia.org/wiki/Source-code_editor). There is a plethora of different IDEs and Source-code Editors for different languages with their own advantages and drawbacks, you can choose whichever you are comfortable with, but i recommend one free and universal editor that will fully satisfy your needs – [Visual Studio Code (VSC),](https://en.wikipedia.org/wiki/Visual_Studio_Code) you can get it [here](https://code.visualstudio.com/download).
+
+After you have successfully installed VSC, configure it to connect to your newly created GitHub repository.
+
+### Configure github repo to connect with VSC.
+
+
+Clone down your ansible-config-mgt repo to your Jenkins-Ansible instance
+
+
+`git clone <ansible-config-mgt repo link>`
+
 
 ## BEGIN ANSIBLE DEVELOPMENT
 

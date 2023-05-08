@@ -120,6 +120,12 @@ After you have successfully installed VSC, configure it to connect to your newly
 
 ### Configure github repo to connect with VSC.
 
+- Download remote development pack on VSC
+
+![remote](./images/ansible-13.png)
+
+- [Helpful article](https://www.techrepublic.com/article/add-github-vs-code/)
+
 
 Clone down your ansible-config-mgt repo to your Jenkins-Ansible instance
 
@@ -129,7 +135,14 @@ Clone down your ansible-config-mgt repo to your Jenkins-Ansible instance
 
 ## BEGIN ANSIBLE DEVELOPMENT
 
+![ansible](./images/ansible-14.png)
+
 In your ansible-config-mgt GitHub repository, create a new branch that will be used for development of a new feature.
+
+`git checkout -b prj-11`
+
+![prj](./images/ansible-15.png)
+
 
 - Tip: Give your branches descriptive and comprehensive names, for example, if you use Jira or Trello as a project management tool – include ticket number (e.g. PRJ-145) in the
 name of your branch and add a topic and a brief description what this branch is about – a bugfix, hotfix, feature, release (e.g. feature/prj-145-lvm)
@@ -138,20 +151,48 @@ name of your branch and add a topic and a brief description what this branch is 
 
 - Create a directory and name it playbooks – it will be used to store all your playbook files.
 
+![ansible](./images/ansible%2016.png)
+
 - Create a directory and name it inventory – it will be used to keep your hosts organised.
 
 - Within the playbooks folder, create your first playbook, and name it common.yml
 
 - Within the inventory folder, create an inventory file (.yml) for each environment (Development, Staging Testing and Production) dev, staging, uat, and prod respectively.
 
+![ansible](./images/ansible-17.png)
 
 
-Step 4 – Set up an Ansible Inventory
+### Set up an Ansible Inventory
+
 An Ansible inventory file defines the hosts and groups of hosts upon which commands, modules, and tasks in a playbook operate. Since our intention is to execute Linux commands on remote hosts, and ensure that it is the intended configuration on a particular server that occurs. It is important to have a way to organize our hosts in such an Inventory.
 Save below inventory structure in the inventory/dev file to start configuring your development servers. Ensure to replace the IP addresses according to your own setup.
-Note: Ansible uses TCP port 22 by default, which means it needs to ssh into target servers from Jenkins-Ansible host – for this you can implement the concept of ssh-agent. Now you need to import your key into ssh-agent:
-To learn how to setup SSH agent and connect VS Code to your Jenkins-Ansible instance, please see this video:
-For Windows users – ssh-agent on windows
+Note: Ansible uses TCP port 22 by default, which means it needs to ssh into target servers from Jenkins-Ansible host – for this you can implement the concept of ssh-agent. Now you need to import your key into [ssh-agent](https://smallstep.com/blog/ssh-agent-explained/#:~:text=ssh%2Dagent%20is%20a%20key,you%20connect%20to%20a%20server.&text=It%20doesn't%20allow%20your%20private%20keys%20to%20be%20exported.):
+
+
+- Add key to  ssh agent
+
+`eval `ssh-agent -s``
+
+This command did not work
+
+![enval](./images/ansible-20eval.png)
+
+- Helpful [article](https://stackoverflow.com/questions/18683092/how-to-run-ssh-add-on-windows useful article)
+
+`ssh-add <path-to-private-key>`
+
+![ansible](./images/ansible-21.png)
+
+`ssh -A ubuntu@[PublicIP]`
+
+![tut](./images/ansible-22.png)
+
+
+
+
+
+
+
 
 
 

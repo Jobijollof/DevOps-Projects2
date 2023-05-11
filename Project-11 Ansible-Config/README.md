@@ -222,7 +222,6 @@ Update your inventory/dev.yml file with this snippet of code:
 
 ![ansible](./images/ansible-25.png)
 
-
 ### CREATE A COMMON PLAYBOOK
 
 - Create a Common Playbook
@@ -260,7 +259,63 @@ Update your playbooks/common.yml file with following code:
         state: latest
 
 ```        
+![ansible](./images/ansible-26.png)
+
 Examine the code above and try to make sense out of it. This playbook is divided into two parts, each of them is intended to perform the same task: install wireshark utility (or make sure it is updated to the latest version) on your RHEL 8 and Ubuntu servers. It uses root user to perform this task and respective package manager: yum for RHEL 8 and apt for Ubuntu.
+
+Feel free to update this playbook with following tasks:
+
+- Create a directory and a file inside it
+- Change timezone on all servers
+- Run some shell script
+…
+For a better understanding of Ansible playbooks – [watch this video from RedHat](https://youtu.be/ZAdJ7CdN7DY) and [read this article.](https://www.redhat.com/en/topics/automation/what-is-an-ansible-playbook)
+
+### Update GIT with the latest code
+
+Now all of your directories and files live on your machine and you need to push changes made locally to GitHub.
+In the real world, you will be working within a team of other DevOps engineers and developers. It is important to learn how to collaborate with help of GIT. In many organizations there is a development rule that do not allow to deploy any code before it has been reviewed by an extra pair of eyes – it is also called "Four eyes principle".
+Now you have a separate branch, you will need to know how to raise a Pull Request (PR), get your branch peer reviewed and merged to the master branch.
+Commit your code into GitHub:
+
+- use git commands to add, commit and push your branch to GitHub.
+
+```
+git status
+
+git add <selected files>
+
+git commit -m "commit message"
+
+```
+- You are pushing to prj-11 branch. 
+### Create a Pull request (PR)
+
+Wear the hat of another developer for a second, and act as a reviewer.
+If the reviewer is happy with your new feature development, your code will be merged to the master branch.
+Head back on your terminal, checkout from the feature branch into the master, and pull down the latest changes.
+
+Once your code changes appear in master branch – Jenkins will do its job and save all the files (build artifacts) to ***/var/lib/jenkins/jobs/job-name/ansible/builds/<build_number>/archive/ directory*** on Jenkins-Ansible server.
+
+- Check Jenkins for recent build
+
+![build](./images/ansible-27.png)
+
+
+![build](./images/ansible-28consoleoutput.png)
+
+- Check server for build 
+
+```
+/var/lib/jenkins/jobs/job-name/ansible/builds/<build_number>/archive
+
+sudo ls /var/lib/jenkins/jobs/project-tooling/builds/5/archive/
+
+```
+![build](./images/ansible-29.png)
+
+
+
 
 
 

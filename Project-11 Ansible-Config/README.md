@@ -208,7 +208,12 @@ ssh ubuntu@ip
 Now, ssh into your Jenkins-Ansible server using ssh-agent
 ssh -A ubuntu@public-ip
 Also notice, that your Load Balancer user is ubuntu and user for RHEL-based servers is ec2-user.
+- I tried this configuration again on another set of servers and found out that using gitbash gives for a smoother experience.
+
+![replace](https://github.com/Jobijollof/DevOps-Projects2/assets/113374279/2ad1c297-3b3a-4463-9e05-7eb433b82b10)
+
 Update your inventory/dev.yml file with this snippet of code:
+
 [nfs]
 <NFS-Server-Private-IP-Address> ansible_ssh_user='ec2-user'
 

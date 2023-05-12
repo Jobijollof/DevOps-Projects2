@@ -171,7 +171,7 @@ Note: Ansible uses TCP port 22 by default, which means it needs to ssh into targ
 
 - Add key to  ssh agent
 
-`eval `ssh-agent -s`
+eval `ssh-agent -s`
 
 This command did not work
 

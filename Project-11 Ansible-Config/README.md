@@ -179,7 +179,7 @@ This command did not work
 
 ![enval](./images/ansible-20eval.png)
 
-- Helpful [article](https://stackoverflow.com/questions/18683092/how-to-run-ssh-add-on-windows useful article)
+- [Helpful article](https://stackoverflow.com/questions/18683092/how-to-run-ssh-add-on-windows)
 
 `ssh-add <path-to-private-key>`
 

@@ -47,8 +47,8 @@ Configure Jenkins build job to save your repository content every time you chang
 
 - Configure a Post-build job to save all (**) files, like you did it in Project 9.
 
-- Test your setup by making some change in README.MD file in master branch and make sure that builds starts automatically and Jenkins saves the files (build artifacts) in following folder
-ls /var/lib/jenkins/jobs/ansible/builds/<build_number>/archive/
+- Test your setup by making some change in README.MD file in master branch and make sure that builds starts automatically and Jenkins saves the files (build artifacts) in following folder ls /var/lib/jenkins/jobs/job-name/builds/build_number/archive/
+
 
 Note: Trigger Jenkins project execution only for /main (master) branch.
 

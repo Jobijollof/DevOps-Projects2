@@ -215,16 +215,20 @@ Also notice, that your Load Balancer user is ubuntu and user for RHEL-based serv
 Update your inventory/dev.yml file with this snippet of code:
 
 [nfs]
+
 (NFS-Server-Private-IP)-Address ansible_ssh_user='ec2-user'
 
 [webservers]
+
 (Web-Server1-Private-IP-Address) ansible_ssh_user='ec2-user'
 (Web-Server2-Private-IP-Address) ansible_ssh_user='ec2-user'
 
 [db]
+
 (Database-Private-IP-Address) ansible_ssh_user='ubuntu' 
 
 [lb]
+
 (Load-Balancer-Private-IP-Address) ansible_ssh_user='ubuntu'
 
 ![ansible](./images/ansible-25.png)

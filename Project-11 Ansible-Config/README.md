@@ -306,7 +306,9 @@ Wear the hat of another developer for a second, and act as a reviewer.
 If the reviewer is happy with your new feature development, your code will be merged to the master branch.
 Head back on your terminal, checkout from the feature branch into the master, and pull down the latest changes.
 
-Once your code changes appear in master branch – Jenkins will do its job and save all the files (build artifacts) to ***/var/lib/jenkins/jobs/job-name/ansible/builds/<build_number>/archive/ directory*** on Jenkins-Ansible server.
+![replace1](https://github.com/Jobijollof/DevOps-Projects2/assets/113374279/362c5899-6f28-4796-87bb-4a99d8b61d79)
+
+Once your code changes appear in main branch – Jenkins will do its job and save all the files (build artifacts) to ***/var/lib/jenkins/jobs/job-name/ansible/builds/<build_number>/archive/ directory*** on Jenkins-Ansible server.
 
 - Check Jenkins for recent build
 

@@ -47,8 +47,8 @@ Configure Jenkins build job to save your repository content every time you chang
 
 - Configure a Post-build job to save all (**) files, like you did it in Project 9.
 
-- Test your setup by making some change in README.MD file in master branch and make sure that builds starts automatically and Jenkins saves the files (build artifacts) in following folder
-ls /var/lib/jenkins/jobs/ansible/builds/<build_number>/archive/
+- Test your setup by making some change in README.MD file in master branch and make sure that builds starts automatically and Jenkins saves the files (build artifacts) in following folder ls /var/lib/jenkins/jobs/job-name/builds/build_number/archive/
+
 
 Note: Trigger Jenkins project execution only for /main (master) branch.
 
@@ -171,13 +171,15 @@ Note: Ansible uses TCP port 22 by default, which means it needs to ssh into targ
 
 - Add key to  ssh agent
 
-`eval `ssh-agent -s``
+```
+eval `ssh-agent -s`
+```
 
 This command did not work
 
 ![enval](./images/ansible-20eval.png)
 
-- Helpful [article](https://stackoverflow.com/questions/18683092/how-to-run-ssh-add-on-windows useful article)
+- [Helpful article](https://stackoverflow.com/questions/18683092/how-to-run-ssh-add-on-windows)
 
 `ssh-add <path-to-private-key>`
 
@@ -206,19 +208,28 @@ ssh ubuntu@ip
 Now, ssh into your Jenkins-Ansible server using ssh-agent
 ssh -A ubuntu@public-ip
 Also notice, that your Load Balancer user is ubuntu and user for RHEL-based servers is ec2-user.
+- I tried this configuration again on another set of servers and found out that using gitbash gives for a smoother experience.
+
+![replace](https://github.com/Jobijollof/DevOps-Projects2/assets/113374279/2ad1c297-3b3a-4463-9e05-7eb433b82b10)
+
 Update your inventory/dev.yml file with this snippet of code:
+
 [nfs]
-<NFS-Server-Private-IP-Address> ansible_ssh_user='ec2-user'
+
+(NFS-Server-Private-IP)-Address ansible_ssh_user='ec2-user'
 
 [webservers]
-<Web-Server1-Private-IP-Address> ansible_ssh_user='ec2-user'
-<Web-Server2-Private-IP-Address> ansible_ssh_user='ec2-user'
+
+(Web-Server1-Private-IP-Address) ansible_ssh_user='ec2-user'
+(Web-Server2-Private-IP-Address) ansible_ssh_user='ec2-user'
 
 [db]
-<Database-Private-IP-Address> ansible_ssh_user='ubuntu' 
+
+(Database-Private-IP-Address) ansible_ssh_user='ubuntu' 
 
 [lb]
-<Load-Balancer-Private-IP-Address> ansible_ssh_user='ubuntu'
+
+(Load-Balancer-Private-IP-Address) ansible_ssh_user='ubuntu'
 
 ![ansible](./images/ansible-25.png)
 
@@ -295,7 +306,9 @@ git commit -m "commit message"
 
 - If the reviewer is happy with your new feature development, your code will be merged to the master branch.
 
-Once your code changes appear in master branch – Jenkins will do its job and save all the files (build artifacts) to ***/var/lib/jenkins/jobs/job-name/ansible/builds/<build_number>/archive/ directory*** on Jenkins-Ansible server.
+![replace1](https://github.com/Jobijollof/DevOps-Projects2/assets/113374279/362c5899-6f28-4796-87bb-4a99d8b61d79)
+
+Once your code changes appear in main branch – Jenkins will do its job and save all the files (build artifacts) to ***/var/lib/jenkins/jobs/job-name/ansible/builds/<build_number>/archive/ directory*** on Jenkins-Ansible server.
 
 - Check Jenkins for recent build
 

@@ -259,7 +259,7 @@ Update your playbooks/common.yml file with following code:
         state: latest
 
 ```        
-![ansible](./images/ansible-26.png)
+![an-sible](./images/ansible-26.png)
 
 Examine the code above and try to make sense out of it. This playbook is divided into two parts, each of them is intended to perform the same task: install wireshark utility (or make sure it is updated to the latest version) on your RHEL 8 and Ubuntu servers. It uses root user to perform this task and respective package manager: yum for RHEL 8 and apt for Ubuntu.
 
@@ -278,7 +278,7 @@ In the real world, you will be working within a team of other DevOps engineers a
 Now you have a separate branch, you will need to know how to raise a Pull Request (PR), get your branch peer reviewed and merged to the master branch.
 Commit your code into GitHub:
 
-- use git commands to add, commit and push your branch to GitHub.
+- use git commands to add, commit and push your branch to GitHub from  Prj-11 branch.
 
 ```
 git status
@@ -291,9 +291,9 @@ git commit -m "commit message"
 - You are pushing to prj-11 branch. 
 ### Create a Pull request (PR)
 
-Wear the hat of another developer for a second, and act as a reviewer.
-If the reviewer is happy with your new feature development, your code will be merged to the master branch.
-Head back on your terminal, checkout from the feature branch into the master, and pull down the latest changes.
+- Wear the hat of another developer for a second, and act as a reviewer.
+
+- If the reviewer is happy with your new feature development, your code will be merged to the master branch.
 
 Once your code changes appear in master branch – Jenkins will do its job and save all the files (build artifacts) to ***/var/lib/jenkins/jobs/job-name/ansible/builds/<build_number>/archive/ directory*** on Jenkins-Ansible server.
 
@@ -313,6 +313,44 @@ sudo ls /var/lib/jenkins/jobs/project-tooling/builds/5/archive/
 
 ```
 ![build](./images/ansible-29.png)
+
+
+- Head back on your terminal, checkout from the feature branch into the main, and pull down the latest changes.
+
+```
+git checkout main
+
+git pull
+
+```
+
+### RUN FIRST ANSIBLE TEST:
+
+Now, it is time to execute ansible-playbook command and verify if your playbook actually works.
+
+![end](./images/end-1.png)
+
+
+![end](./images/end-2.png)
+
+
+![end](./images/end-3dev.png)
+
+
+
+![end](./images/end-4.png)
+
+- You can go to each of the servers and check if wireshark has been installed by running which wireshark or wireshark --version
+
+![end](./images/end-5.png)
+
+
+![final](./images/end-6.png)
+
+
+[end](https://media.giphy.com/media/2aGluESYp6PWP2DYgY/giphy.gif)
+
+
 
 
 

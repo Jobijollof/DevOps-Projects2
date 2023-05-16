@@ -30,3 +30,36 @@ Change permissions to this directory, so Jenkins could save files there – chmo
 
 Go to Jenkins web console -> Manage Jenkins -> Manage Plugins -> on Available tab search for 
 Copy Artifact and install this plugin without restarting Jenkins
+
+![artifact](./images/Ansible-2copyartifact.png)
+
+
+![artifact](./images/ansible-3dwnld.png)
+
+Create a new Freestyle project and name it save_artifacts.
+This project will be triggered by completion of your existing ansible project. Configure it accordingly:
+
+![artifact](./images/ansible-4freestyle.png)
+
+
+![artifact](./images/ansible-5.png)
+
+- Note: You can configure number of builds to keep in order to save space on the server, for example, you might want to keep only last 2 or 5 build results. You can also make this change to your ansible job.
+
+- The main idea of save_artifacts project is to save artifacts into ***/home/ubuntu/ansible-config-artifact*** directory. To achieve this, create a Build step and choose Copy artifacts from other project, specify ansible as a source project and /home/ubuntu/ansible-config-artifact as a target directory.
+
+![artifact](./images/ansible-6.png)
+
+![artifact](./images/ansible-7.png)
+
+![arifact](./images/ansible-8.png)
+
+We are going to test our set up by making some changes in README.MD file inside our ansible-config repository (right inside master branch).
+
+If both Jenkins jobs have completed one after another – you shall see our files inside /home/ubuntu/ansible-config-artifact directory and it will be updated with every commit to our main branch.
+
+![artifact](./images/ansible-9.png)
+
+![artifact](./images/Ansible-10.png)
+
+![artifact](./images/ansible-11.png)

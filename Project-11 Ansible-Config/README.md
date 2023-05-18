@@ -214,6 +214,8 @@ Also notice, that your Load Balancer user is ubuntu and user for RHEL-based serv
 
 Update your inventory/dev.yml file with this snippet of code:
 
+```
+
 [nfs]
 
 (NFS-Server-Private-IP)-Address ansible_ssh_user='ec2-user'
@@ -231,7 +233,10 @@ Update your inventory/dev.yml file with this snippet of code:
 
 (Load-Balancer-Private-IP-Address) ansible_ssh_user='ubuntu'
 
+```
+
 ![ansible](./images/ansible-25.png)
+
 
 ### CREATE A COMMON PLAYBOOK
 
@@ -340,6 +345,13 @@ git pull
 ### RUN FIRST ANSIBLE TEST:
 
 Now, it is time to execute ansible-playbook command and verify if your playbook actually works.
+
+```
+cd /var/lib/jenkins/jobs/ansible/builds/4/archive
+
+ansible-playbook -i inventory/dev.yml playbooks/common.yml
+
+```
 
 ![end](./images/end-1.png)
 

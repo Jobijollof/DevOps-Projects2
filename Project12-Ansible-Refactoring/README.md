@@ -63,3 +63,47 @@ If both Jenkins jobs have completed one after another – you shall see our file
 ![artifact](./images/Ansible-10.png)
 
 ![artifact](./images/ansible-11.png)
+
+
+### REFACTOR ANSIBLE CODE BY IMPORTING OTHER PLAYBOOKS INTO SITE.YML
+DevOps philosophy implies constant iterative improvement for better efficiency – refactoring is one of the techniques that can be used, but you always have an answer to question "why?". Why do we need to change something if it works well?
+
+[In Project 11](https://github.com/Jobijollof/DevOps-Projects2/tree/main/Project-11%20Ansible-Config) we wrote all tasks in a single playbook common.yml.
+
+Now it is a simple set of instructions for only 2 types of OS, but imagine we have many more tasks and we need to apply this playbook to other servers with different requirements. 
+In this case, we will have to read through the whole playbook to check if all tasks written there are applicable and if there  is anything that we would need to add for certain server/OS families.
+Very fast, it becomes a tedious exercise and our playbook will become messy with many commented parts. Your DevOps colleagues will not appreciate such organization of your codes and it will be difficult for them to use your playbook.
+Most Ansible users learn the one-file approach first. However, breaking tasks up into different files is an excellent way to organize complex sets of tasks and reuse them.
+
+### Execution:
+
+– Refactor Ansible code by importing other playbooks into site.yml
+Before starting to refactor the codes,  we would ensure that we have pulled down the latest code from master (main) branch.
+
+- Create a new branch, name it refactor.
+
+Let see code re-use in action by importing other playbooks.
+
+- Within playbooks folder, create a new file and name it site.yml – This file will now be considered as an entry point into the entire infrastructure configuration. Other playbooks will be included here as a reference. In other words, site.yml will become a parent to all other playbooks that will be developed. Including common.yml that was created previously.
+
+![dev](./images/Refactor-1.png)
+
+![dev](./images/refactor-2.png)
+
+- Create a new folder in root of the repository and name it static-assignments. The static-assignments folder is where all other children playbooks will be stored. This is merely for easy organization of your work. It is not an Ansible specific concept, therefore you can choose how you want to organize your work. You will see why the folder name has a prefix of static very soon. For now, just follow along.
+
+![dev](./images/refactor-3.png)
+
+
+- Move common.yml file into the newly created static-assignments folder.
+
+![dev](./images/refactor-3.png)
+
+- Create another playbook under static-assignments and name it common-del.yml. In this playbook, configure deletion of wireshark utility.
+
+- Update site.yml with import_playbook: 
+
+`../static-assignments/common-del.yml` and run against dev.yml servers.
+
+
+

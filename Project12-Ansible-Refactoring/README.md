@@ -101,9 +101,15 @@ Let see code re-use in action by importing other playbooks.
 
 - Create another playbook under static-assignments and name it common-del.yml. In this playbook, configure deletion of wireshark utility.
 
-- Update site.yml with import_playbook: 
+update site.yml with - import_playbook: ../static-assignments/common-del.yml instead of common.yml and run it against dev  servers:
 
-`../static-assignments/common-del.yml` and run against dev.yml servers.
+```
+cd /home/ubuntu/ansible-config-mgt/
+
+
+ansible-playbook -i inventory/dev.yml playbooks/site.yaml
+
+```
 
 
 

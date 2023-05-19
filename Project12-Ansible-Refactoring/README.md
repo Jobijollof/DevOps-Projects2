@@ -151,9 +151,9 @@ There is a  need to apply some tasks to our dev servers and  since we already ha
 
 ```
 
-- update site.yml with - import_playbook: 
+- update site.yml with: 
 
-../static-assignments/common-del.yml instead of common.yml and run it against dev  servers:
+import_playbook: ../static-assignments/common-del.yml instead of common.yml and run it against dev  servers.
 
 ![refactor](./images/refactor-4site.png)
 

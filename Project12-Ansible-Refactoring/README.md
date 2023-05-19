@@ -99,17 +99,78 @@ Let see code re-use in action by importing other playbooks.
 
 ![dev](./images/refactor-3.png)
 
-- Create another playbook under static-assignments and name it common-del.yml. In this playbook, configure deletion of wireshark utility.
 
-update site.yml with - import_playbook: ../static-assignments/common-del.yml instead of common.yml and run it against dev  servers:
+After Moving  common.yml file into static-assignments folder, import common.yml playbook into 
+site.yml file.
+
+```
+---
+- hosts: all
+- import_playbook: ../static-assignments/common.yml
+
+```
+
+![reafcactor](./images/refactor-6c.png)
+
+The code above uses built in [import_playbook](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/import_playbook_module.html) Ansible module.
+
+Your folder structure should look like this;
+
+![file](./images/refactor-5files.png)
+
+### Run ansible-playbook command against the dev environment
+There is a  need to apply some tasks to our dev servers and  since we already have wireshark installed, we will go ahead and create another playbook under static-assignments and name it common-del.yml. In this playbook,  we will configure the deletion of wireshark utility.
+
+```
+---
+- name: update web, nfs and db servers
+  hosts: webservers, nfs, db
+  remote_user: ec2-user
+  become: yes
+  become_user: root
+  tasks:
+  - name: delete wireshark
+    yum:
+      name: wireshark
+      state: removed
+
+- name: update LB server
+  hosts: lb
+  remote_user: ubuntu
+  become: yes
+  become_user: root
+  tasks:
+  - name: delete wireshark
+    apt:
+      name: wireshark-qt
+      state: absent
+      autoremove: yes
+      purge: yes
+      autoclean: yes
+
+
+```
+
+- update site.yml with - import_playbook: ../static-assignments/common-del.yml instead of common.yml and run it against dev  servers:
+
+![refactor](./images/refactor-4site.png)
 
 ```
 cd /home/ubuntu/ansible-config-mgt/
-
 
 ansible-playbook -i inventory/dev.yml playbooks/site.yaml
 
 ```
 
+- I had an error
+
+![error](./images/refactor-errorkey.png)
+
+- Solution to error. I had to add the path to the keypair to dev.yml
+
+![error](./images/refactor-keysolution.png)
+
+
+![solution](./images/refactor-play.png)
 
 

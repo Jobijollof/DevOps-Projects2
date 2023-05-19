@@ -77,7 +77,7 @@ Most Ansible users learn the one-file approach first. However, breaking tasks up
 
 ### Execution:
 
-– Refactor Ansible code by importing other playbooks into site.yml
+- Refactor Ansible code by importing other playbooks into site.yml
 Before starting to refactor the codes,  we would ensure that we have pulled down the latest code from master (main) branch.
 
 - Create a new branch, name it refactor.
@@ -151,7 +151,9 @@ There is a  need to apply some tasks to our dev servers and  since we already ha
 
 ```
 
-- update site.yml with - import_playbook: ../static-assignments/common-del.yml instead of common.yml and run it against dev  servers:
+- update site.yml with - import_playbook: 
+
+../static-assignments/common-del.yml instead of common.yml and run it against dev  servers:
 
 ![refactor](./images/refactor-4site.png)
 

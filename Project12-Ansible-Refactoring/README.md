@@ -175,4 +175,24 @@ ansible-playbook -i inventory/dev.yml playbooks/site.yaml
 
 ![solution](./images/refactor-play.png)
 
+Make sure that wireshark is deleted on all the servers by running wireshark --version
+Now you have learned how to use import_playbooks module and you have a ready solution to install/delete packages on multiple servers with just one command.
+
+![end](./images/end.png)
+
+## CONFIGURE UAT WEBSERVERS WITH A ROLE ‘WEBSERVER’
+
+- Configure UAT Webservers with a role ‘Webserver’
+
+We have our nice and clean dev environment, so let us put it aside and configure 2 new Web Servers as uat. We could write tasks to configure Web Servers in the same playbook, but it would be too messy, instead, we will use a dedicated role to make our configuration reusable.
+Launch 2 fresh EC2 instances using RHEL 8 image, we will use them as our uat servers, so give them names accordingly – Web1-UAT and Web2-UAT.
+Tip: Do not forget to stop EC2 instances that you are not using at the moment to avoid paying extra. For now, you only need 2 new RHEL 8 servers as Web Servers and 1 existing Jenkins-Ansible server up and running.
+To create a role, you must create a directory called roles/, relative to the playbook file or in /etc/ansible/ directory.
+There are two ways how you can create this folder structure:
+Use an Ansible utility called ansible-galaxy inside ansible-config-mgt/roles directory (you need to create roles directory upfront)mkdir roles
+cd roles
+ansible-galaxy init webserver
+Create the directory/files structure manually
+
+
 

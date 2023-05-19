@@ -175,8 +175,10 @@ ansible-playbook -i inventory/dev.yml playbooks/site.yaml
 
 ![solution](./images/refactor-play.png)
 
-Make sure that wireshark is deleted on all the servers by running wireshark --version
-Now you have learned how to use import_playbooks module and you have a ready solution to install/delete packages on multiple servers with just one command.
+Make sure that wireshark is deleted on all the servers by running
+`wireshark --version`
+
+We have now learned how to use import_playbooks module and we have a ready solution to install/delete packages on multiple servers with just one command.
 
 ![end](./images/end.png)
 

@@ -7,7 +7,8 @@
 - Imports allow to effectively re-use previously created playbooks in a new playbook. 
 
 ### Code Refactoring
-Refactoring is a general term in computer programming. It means making changes to the source code without changing expected behaviour of the software. The main idea of refactoring is to enhance code readability, increase maintainability and extensibility, reduce complexity, add proper comments without affecting the logic.
+
+Refactoring is a general term in computer programming. It means making changes to the source code without changing expected behavior of the software. The main idea of refactoring is to enhance code readability, increase maintainability and extensibility, reduce complexity, add proper comments without affecting the logic.
 
 In our case, we will move things around a little bit in the code, but the overall state of the infrastructure remains the same.
 

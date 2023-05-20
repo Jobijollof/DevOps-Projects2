@@ -238,7 +238,7 @@ Update your inventory/dev.yml file with this snippet of code:
 ![ansible](./images/ansible-25.png)
 
 
-### CREATE A COMMON PLAYBOOK
+### Create  a Common Playbook
 
 - Create a Common Playbook
 

@@ -188,15 +188,77 @@ We have now learned how to use import_playbooks module and we have a ready solut
 
 - Configure UAT Webservers with a role ‘Webserver’
 
-We have our nice and clean dev environment, so let us put it aside and configure 2 new Web Servers as uat. We could write tasks to configure Web Servers in the same playbook, but it would be too messy, instead, we will use a dedicated role to make our configuration reusable.
-Launch 2 fresh EC2 instances using RHEL 8 image, we will use them as our uat servers, so give them names accordingly – Web1-UAT and Web2-UAT.
+We have our nice and clean dev environment, so let us put it aside and configure 2 new Web Servers as uat. 
+We could write tasks to configure Web Servers in the same playbook, but it would be too messy, instead, we will use a dedicated role to make our configuration reusable.
+
+- Launch 2 fresh EC2 instances using RHEL 8 image.  We are going to use them as our uat servers. Name servers accordingly – Web1-UAT and Web2-UAT.
+
 Tip: Do not forget to stop EC2 instances that you are not using at the moment to avoid paying extra. For now, you only need 2 new RHEL 8 servers as Web Servers and 1 existing Jenkins-Ansible server up and running.
-To create a role, you must create a directory called roles/, relative to the playbook file or in /etc/ansible/ directory.
+
+![darey](./images/Snipaste_2023-05-22_18-29-50.png)
+
+To create a role, we must create a directory called roles/, relative to the playbook file or in /etc/ansible/ directory.
 There are two ways how you can create this folder structure:
-Use an Ansible utility called ansible-galaxy inside ansible-config-mgt/roles directory (you need to create roles directory upfront)mkdir roles
+
+1.  Use an Ansible utility called ansible-galaxy.  Inside ansible-config-mgt/roles directory (you need to create roles directory upfront)
+
+```
+mkdir roles
 cd roles
 ansible-galaxy init webserver
-Create the directory/files structure manually
+
+```
+2. Create the directory/files structure manually from branch refactor
+
+![roles](./images/gitpod.png)
+
+- Note: You can choose either way, but since we store all our codes in GitHub, it is recommended to create folders and files there rather than locally on Jenkins-Ansible server.
+The entire folder structure should look like below, but if you create it manually – you can skip creating tests, files, and vars or remove them if you used ansible-galaxy
+
+```
+
+└── webserver
+    ├── README.md
+    ├── defaults
+    │   └── main.yml
+    ├── files
+    ├── handlers
+    │   └── main.yml
+    ├── meta
+    │   └── main.yml
+    ├── tasks
+    │   └── main.yml
+    ├── templates
+    ├── tests
+    │   ├── inventory
+    │   └── test.yml
+    └── vars
+        └── main.yml
+
+```
+
+After removing unnecessary directories and files, the roles structure should look like this
+
+```
+└── webserver
+    ├── README.md
+    ├── defaults
+    │   └── main.yml
+    ├── handlers
+    │   └── main.yml
+    ├── meta
+    │   └── main.yml
+    ├── tasks
+    │   └── main.yml
+    └── templates
+
+```    
+
+![uat](./images/uat-1.png)
+
+
+Update your inventory ansible-config-mgt/inventory/uat.yml file with IP addresses of your 2 UAT Web servers
+
 
 
 

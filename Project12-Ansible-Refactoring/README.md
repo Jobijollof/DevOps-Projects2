@@ -260,7 +260,110 @@ After removing unnecessary directories and files, the roles structure should loo
 Update your inventory ansible-config-mgt/inventory/uat.yml file with IP addresses of your 2 UAT Web servers
 
 
+```
+[uat-webservers]
+<Web1-UAT-Server-Private-IP-Address> ansible_ssh_user='ec2-user' ansible_ssh_private_key_file=<path-to-pem-file>
+<Web2-UAT-Server-Private-IP-Address> ansible_ssh_user='ec2-user' ansible_ssh_private_key_file=<path-to-pem-file>
+
+```
+NOTE: Ensure you are using ssh-agent to ssh into the Jenkins-Ansible instance just as you have done in project 11;
+To learn how to setup SSH agent and connect VS Code to your Jenkins-Ansible instance, please see this video:
+For Windows users – [ssh-agent on windows](https://youtu.be/OplGrY74qog)
+For Linux users – [ssh-agent on linux](https://youtu.be/OplGrY74qog)
 
 
+- Copy your keypair from your local machine into your EC2 Instance using SCP
 
+- cd into the folder that you have your kepair located then run
+
+```
+ scp -i <"Name-of-keypair-used-to-ssh-into-the-instance"> <Name-of-kepair-that-you-want-to-copy> <username@public-IP:><path-to-copy-to/>
+
+```
+![uat](./images/uat-3scp-i.png)
+
+- Edit the  /etc/ansible/ansible.cfg file.
+
+- Uncomment roles_path string and provide a full path to your roles directory 
+
+- roles_path = /home/ubuntu/ansible-config-mgt/roles, so Ansible could know where to find configured role
+
+![jobina](./images/uat-4.png)
+
+It is time to start adding some logic to the webserver role. Go into tasks directory, and within the main.yml file, start writing configuration tasks to do the following:
+
+1. Install and configure Apache (httpd service)
+
+2. Clone Tooling website from [GitHub](https://github.com/Jobijollof/tooling).
+
+3. Ensure the tooling website code is deployed to /var/www/html on each of 2 UAT Web servers.
+
+4. Make sure httpd service is started
+
+
+- Your main.yml may consist of following tasks:
+
+```
+
+---
+- name: install apache
+  become: true
+  ansible.builtin.yum:
+    name: "httpd"
+    state: present
+
+- name: install git
+  become: true
+  ansible.builtin.yum:
+    name: "git"
+    state: present
+
+- name: clone a repo
+  become: true
+  ansible.builtin.git:
+    repo: https://github.com/<your-name>/tooling.git
+    dest: /var/www/html
+    force: yes
+
+- name: copy html content to one level up
+  become: true
+  command: cp -r /var/www/html/html/ /var/www/
+
+- name: Start service httpd, if not started
+  become: true
+  ansible.builtin.service:
+    name: httpd
+    state: started
+
+- name: recursively remove /var/www/html/html/ directory
+  become: true
+  ansible.builtin.file:
+    path: /var/www/html/html
+    state: absent
+
+
+```
+
+![git](./images/uat-5.png)
+
+### REFERENCE WEBSERVER ROLE
+
+- Referencing ‘Webserver’ role
+
+Within the static-assignments folder, create a new assignment for uat-webservers uat-webservers.yml. This is where you will reference the role.
+
+```
+---
+- hosts: uat-webservers
+  roles:
+     - webserver
+
+```
+![git](./images/uat-6.png)
+
+### Commit & Test
+
+Commit your changes, create a Pull Request and merge them to master branch, make sure webhook triggered two consequent Jenkins jobs, they ran successfully and copied all the files to your Jenkins-Ansible server into /home/ubuntu/ansible-config-artifact/ directory.
+
+Now run the playbook against your uat inventory and see what happens:
 

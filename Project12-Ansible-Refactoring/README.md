@@ -352,6 +352,9 @@ It is time to start adding some logic to the webserver role. Go into tasks direc
 
 Within the static-assignments folder, create a new assignment for uat-webservers uat-webservers.yml. This is where you will reference the role.
 
+This code did not work.
+
+
 ```
 ---
 - hosts: uat-webservers
@@ -361,9 +364,125 @@ Within the static-assignments folder, create a new assignment for uat-webservers
 ```
 ![git](./images/uat-6.png)
 
+```
+
 ### Commit & Test
 
 Commit your changes, create a Pull Request and merge them to master branch, make sure webhook triggered two consequent Jenkins jobs, they ran successfully and copied all the files to your Jenkins-Ansible server into /home/ubuntu/ansible-config-artifact/ directory.
 
 Now run the playbook against your uat inventory and see what happens:
+
+`sudo ansible-playbook -i /home/ubuntu/ansible-config-mgt/inventory/uat.yml /home/ubuntu/ansible-config-mgt/playbooks/site.yaml`
+
+You should be able to see both of your UAT Web servers configured and you can try to reach them from your browser:
+
+- I had this error
+![error](./images/error-ansible.png) 
+
+- I fixed thesyntax issue in my site.yml
+
+- Then i ran
+
+`sudo ansible-playbook -i /home/ubuntu/ansible-config-mgt/inventory/uat.yml /home/ubuntu/ansible-config-mgt/playbooks/site.yaml`
+
+- Another error
+
+```
+
+
+[DEPRECATION WARNING]: The TRANSFORM_INVALID_GROUP_CHARS settings is set to allow bad characters in group names by
+default, this will change, but still be user configurable on deprecation. This feature will be removed in version 2.10.
+ Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+[WARNING]: Invalid characters were found in group names but not replaced, use -vvvv to see details
+ERROR! the role 'webserver' was not found in /home/ubuntu/ansible-config-artifact/playbooks/../static-assignments/roles:/home/ubuntu/ansible-config-mgt/roles:/home/ubuntu/ansible-config-artifact/playbooks/../static-assignments
+
+The error appears to be in '/home/ubuntu/ansible-config-artifact/static-assignments/uat-webservers.yml': line 4, column 8, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  roles: uat-webservers
+     - webserver
+       ^ here
+
+
+```
+
+
+- I altered the code in uat-webservers.yml to: 
+
+---
+- hosts: all
+  roles:
+     - webserver
+
+I also altered the code in `site.yml` to the following:
+
+```
+
+---
+- hosts: all
+- import_playbook: ../static-assignments/uat-webservers.yml
+
+```
+- I copied roles into static assignments folder.
+
+- I ran the ansible command and  got another error.
+
+```
+
+The authenticity of host '172.31.18.59 (172.31.18.59)' can't be established.
+ECDSA key fingerprint is SHA256:uQeMvVCHRhsAaser8iLI+3n64JjaICGLsTFjXXYgdEI.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? The authenticity of host '172.31.23.243 (172.31.23.243)' can't be established.
+ECDSA key fingerprint is SHA256:sc6qQDCecUwBPs6cdCAjkpKWYa6nJM2hio0pPupLkbk.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? y
+Please type 'yes', 'no' or the fingerprint: yes
+fatal: [172.31.23.243]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: Warning: Permanently added '172.31.23.243' (ECDSA) to the list of known hosts.\r\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @\r\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\nPermissions 0644 for '/home/ubuntu/ansible-config-artifact/inventory/keypair.pem' are too open.\r\nIt is required that your private key files are NOT accessible by others.\r\nThis private key will be ignored.\r\nLoad key \"/home/ubuntu/ansible-config-artifact/inventory/keypair.pem\": bad permissions\r\nec2-user@172.31.23.243: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).", "unreachable": true}
+
+fatal: [172.31.18.59]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: Host key verification failed.", "unreachable": true}
+
+PLAY RECAP *****************************************************
+172.31.18.59               : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0
+172.31.23.243              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0
+
+```
+
+- I had a chat with chatgpt and got the following as possible solutions.
+
+SSH host key verification failed: This error occurs when the SSH host key of the remote server has changed, which could indicate a security issue. You can resolve this by removing the old host keys associated with the remote servers from your known_hosts file. You can use the ssh-keygen command to remove the entries for 172.31.18.59 and 172.31.23.243 from the known_hosts file. 
+
+Run the following command:
+
+```
+ssh-keygen -R 172.31.18.59
+ssh-keygen -R 172.31.23.243
+
+```
+
+After removing the entries, try running your script again.
+
+Bad permissions on the private key file:
+
+The error message indicates that the permissions for the private key file (/home/ubuntu/ansible-config-artifact/inventory/keypair.pem) are too open. The permissions should be set to be readable only by the owner (chmod 600 keypair.pem). Incorrect permissions on the private key file can lead to authentication failures. Fix the permissions using the following command:
+
+```
+chmod 600 /home/ubuntu/ansible-config-artifact/inventory/keypair.pem
+
+```
+
+- I ran the script again and still had errors.
+
+- I changed the permission for my keypair file
+
+`chmod u+x keypair.pem`
+
+This made the difference.
+
+![script](./images/uat-8end.png)
+
+
+![end](./images/uat-tooling.png)
+
+
+
 

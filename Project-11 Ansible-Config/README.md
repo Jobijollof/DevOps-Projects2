@@ -353,6 +353,13 @@ ansible-playbook -i inventory/dev.yml playbooks/common.yml
 
 ```
 
+- I had permission issues.
+
+![error](./images/Snipaste_2023-05-26_13-55-35.png) (This is not my server. I forgot to capture the error but i got someone else with the same error to send a screenshot)
+
+- To solve this i entered the builds archive . Listed the files in the archive and entered into inventory folder and created a file named keypair.pem. I added my keypair into the file. Copied the path for the keypair and added it to my dev.yml file.
+
+
 ![end](./images/end-1.png)
 
 
@@ -361,7 +368,14 @@ ansible-playbook -i inventory/dev.yml playbooks/common.yml
 
 ![end](./images/end-3dev.png)
 
+- I ran the ansible code again
 
+```
+cd /var/lib/jenkins/jobs/Project-name/builds/build No/archive
+
+ansible-playbook -i inventory/dev.yml playbooks/common.yml
+
+```
 
 ![end](./images/end-4.png)
 
@@ -372,8 +386,6 @@ ansible-playbook -i inventory/dev.yml playbooks/common.yml
 
 ![final](./images/end-6.png)
 
-
-[end](https://media.giphy.com/media/2aGluESYp6PWP2DYgY/giphy.gif)
 
 
 

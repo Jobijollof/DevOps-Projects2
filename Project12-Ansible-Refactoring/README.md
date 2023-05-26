@@ -480,8 +480,13 @@ This made the difference.
 
 ![script](./images/uat-8end.png)
 
+I was now able to see both of my UAT Web servers configured and i was able  reach them from my browser:
 
-![end](./images/uat-tooling.png)
+`http://<Web1-UAT-Server-Public-IP-or-Public-DNS-Name>/index.php`
+
+Our Ansible architecture now looks like this
+
+![act](./images/Architecture.png)
 
 
 

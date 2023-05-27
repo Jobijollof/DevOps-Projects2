@@ -1,4 +1,4 @@
-## ANSIBLE REFACTORING AND STATIC ASSIGNMENTS (IMPORTS AND ROLES)
+# ANSIBLE REFACTORING AND STATIC ASSIGNMENTS (IMPORTS AND ROLES)
 
 - In this project we will continue working with ansible-config-mgt repository and make some improvements of our code. 
 
@@ -6,7 +6,7 @@
 
 - Imports allow to effectively re-use previously created playbooks in a new playbook. 
 
-### Code Refactoring
+## Code Refactoring
 
 Refactoring is a general term in computer programming. It means making changes to the source code without changing expected behavior of the software. The main idea of refactoring is to enhance code readability, increase maintainability and extensibility, reduce complexity, add proper comments without affecting the logic.
 
@@ -21,7 +21,7 @@ Futhermore, it consumes space on the Jenkins server with subsequent changes.
 
 We would enhance it by introducing a new Jenkins project/job – we will require Copy Artifact plugin.
 
-In our Jenkins-Ansible server we will create a new directory called ansible-config-artifact – we will store there all artifacts after each build.
+In our Jenkins-Ansible server we will create a new directory called ansible-config-artifact.  We will store there all artifacts after each build.
 
 `sudo mkdir /home/ubuntu/ansible-config-artifact`
 
@@ -40,14 +40,14 @@ Copy Artifact and install this plugin without restarting Jenkins
 Create a new Freestyle project and name it save_artifacts.
 This project will be triggered by completion of your existing ansible project. Configure it accordingly:
 
+- The main idea of save_artifacts project is to save artifacts into ***/home/ubuntu/ansible-config-artifact*** directory. To achieve this, create a Build step and choose Copy artifacts from other project, specify ansible as a source project and /home/ubuntu/ansible-config-artifact as a target directory.
+
 ![artifact](./images/ansible-4freestyle.png)
 
 
 ![artifact](./images/ansible-5.png)
 
 - Note: You can configure number of builds to keep in order to save space on the server, for example, you might want to keep only last 2 or 5 build results. You can also make this change to your ansible job.
-
-- The main idea of save_artifacts project is to save artifacts into ***/home/ubuntu/ansible-config-artifact*** directory. To achieve this, create a Build step and choose Copy artifacts from other project, specify ansible as a source project and /home/ubuntu/ansible-config-artifact as a target directory.
 
 ![artifact](./images/ansible-6.png)
 

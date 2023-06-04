@@ -117,6 +117,9 @@ Now paste the instruction below into the env-vars.yml file.
 - name: collate variables from env specific file, if it exists
   hosts: all
   tasks:
+```
+
+```  
     - name: looping through list of available files
       include_vars: "{{ item }}"
       with_first_found:

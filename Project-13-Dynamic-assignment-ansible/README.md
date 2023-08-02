@@ -6,22 +6,24 @@ In Ansible, there are two ways to include external files or other playbooks: the
 ### Import statement:
 
 The import statement is used to incorporate external files or playbooks into the main playbook. It includes the content of the imported file directly into the main playbook at the point where the statement is used. The imported content is treated as if it was written in place.
+The import statement is like copying and pasting the content of the imported playbook or task directly into the main playbook at the location of the import statement.
+The imported content becomes part of the main playbook and is treated as if it was originally written there.
+When you use import, the imported tasks or playbooks run at the same level as the tasks in the main playbook.
+You can use variables and other resources defined in the main playbook within the imported content, and vice versa.
 
-Here's an example of using the import statement:
 
-```
-yaml
-Copy code
-- hosts: servers
+- name: Main Playbook
+  hosts: localhost
   tasks:
-    - name: Include tasks from another playbook
-      import_playbook: path/to/other-playbook.yml
+    - name: Task 1
+      # Some task...
 
-    - name: Perform other tasks in the main playbook
-      # Additional tasks go here
+    - name: Import Playbook 2
+      import_playbook: playbook2.yml
 
-```
-In this example, the tasks defined in the other-playbook.yml file will be included in the main playbook at the specified location. Once the imported tasks are executed, the execution flow continues with the remaining tasks in the main playbook.
+    - name: Task 2
+      # Some task...
+
 
 ### Include statement:
 
@@ -49,13 +51,6 @@ import = Static
 include = Dynamic
 
 ```
-
-In this case, think of import statements as a way to bring in specific tasks or instructions that you can directly follow. It's like having a set of step-by-step guides for different parts of the party. For example, you might have a guide on how to decorate the venue, another guide on how to prepare the food, and so on. With import statements, you can easily include these guides into your overall plan and execute them when needed.
-
-On the other hand, include statements are more like adding separate sections to your overall plan. Instead of following specific instructions right away, you include entire sections that describe different aspects of the party. For instance, you might have a section dedicated to entertainment, another section for managing the guest list, and so forth. These sections can be included in your plan, and you can decide when to execute them based on the overall flow of the party preparations.
-
-In summary, import statements allow you to directly bring in specific instructions or tasks that you can execute as part of your plan, while include statements let you include entire sections that describe different parts of your plan, allowing for better organization and flexibility in the overall process.
-
 
 # INTRODUCING DYNAMIC ASSIGNMENT INTO OUR STRUCTURE
 
@@ -92,8 +87,6 @@ Note: Depending on what method you used in the previous project you may have or 
     └── common.yml
 
 ```   
-
-
 
 Since we will be using the same Ansible to configure multiple environments, and each of these environments will have certain unique attributes, such as servername, ip-address etc., we will need a way to set values to variables per specific environment.
 For this reason, we will now create a folder to keep each environment’s variables file. Therefore, create a new folder env-vars, then for each environment, create new YAML files which we will use to set variables.
@@ -192,4 +185,190 @@ We made use of (special variables)[https://docs.ansible.com/ansible/latest/refer
 
 We are including the variables using a loop. with_first_found implies that, looping through the list of files, the first one found is used. This is good so that we can always set default values in case an environment specific env file does not exist.
 
-### Update `site.yml` file to use of the dynamic assignment (At this point, we cannot test it yet).
+### Update `site.yml` file with dynamic assignment 
+(At this point, we cannot test it yet We are just setting the stage for what is yet to come. So hang on to your hats) site.yml should now look like this.
+
+```
+
+---
+- hosts: all
+- name: Include dynamic variables 
+  tasks:
+  import_playbook: ../static-assignments/common.yml 
+  include: ../dynamic-assignments/env-vars.yml
+  tags:
+    - always
+
+-  hosts: webservers
+- name: Webserver assignment
+  import_playbook: ../static-assignments/webservers.yml
+
+```
+
+### Community Roles
+
+Now it is time to create a role for MySQL database – it should install the MySQL package, create a database and configure users.  Why bother going through the stress of creating a role for mysql when we can leverage community roles. There are tons of roles that have already been developed by other open source engineers out there. These roles are actually production ready, and dynamic to accomodate most of Linux flavours. With Ansible Galaxy again, we can simply download a ready to use ansible role, and keep going.
+
+This is my explanation of everything up until this point.
+In the world of technology, there's a fantastic tool called Ansible. It's like a magical assistant that helps you automate and manage tasks on your computers and servers. Think of it as your own personal helper to make your tech life easier!
+
+Now, imagine you have a bunch of friends, and each friend is good at doing different things. One friend is great at cooking, another is a pro at cleaning, and there's one who can fix anything. With Ansible, you can gather all your friends' skills and put them to work for you!
+
+In Ansible, your friends are called "roles." Each role has a specific set of abilities and tasks they can do. For example, the "web server" role knows how to set up a website, and the "database" role can manage your data.
+
+You don't have to teach your friends what to do each time; they already know their tasks. Instead, you can tell Ansible which friends (roles) you need and what tasks they should perform. Ansible will then coordinate all your friends to work together and get the job done smoothly.
+
+But here's the best part: You don't need to write down every detail for your friends. You can use "playbooks" to give them all the instructions they need. A playbook is like a to-do list for your friends. You tell Ansible what you want to achieve, and it takes care of the rest!
+
+Now, Ansible also has a big library of playbooks and roles that the whole tech community shares. It's like a treasure chest of ready-made solutions! If you need your friends to do something common, you can find a playbook in the treasure chest that matches your needs. You don't have to start from scratch; you can build on what others have done!
+
+So, in a nutshell, Ansible is your magical tech assistant that can call on your skilled friends (roles) to do all sorts of tasks for you. With its help and the treasure chest of shared playbooks, you can automate and manage your tech world with ease!
+
+
+### Download MySQL Ansible Role
+
+We will be using a MySQL role developed by geerlingguy. Hint: To preserve your your GitHub in actual state after you install a new role – make a commit and push to master your ‘ansible-config-mgt’ directory. Make sure you have git installed and configured on Jenkins-Ansible server and, for more convenient work with codes, you can configure Visual Studio Code to work with this directory. 
+In this case, you will no longer need webhook and Jenkins jobs to update your codes on Jenkins-Ansible server, so you can disable it – we will be using Jenkins in later.
+
+On Jenkins-Ansible server make sure that git is installed with `git --version` then go to ‘ansible-config-mgt’ directory and run.
+
+Check if the Ansible-config.mgt repo exists if not clone the repo
+
+![ansible](./images/git-clone%20for%20ansible-config-mgt.png)
+
+
+
+```
+cd ansible-config-mgt
+git init
+git pull https://github.com/<your-name>/ansible-config-mgt.git
+git remote add origin https://github.com/<your-name>/ansible-config-mgt.git
+git branch roles-feature
+git switch roles-feature
+
+```
+
+![ansible](./images/initialising-git.png)
+
+At this point i realised that my dynamic assignments branch was not up to date with the main branch because all the changes did not reflect after cloning the repo.
+
+![list](./images/ls.png)
+
+To merge dynamic-assignments branch with the main (or master) branch using Visual Studio Code, i followed these steps:
+
+Step 1: Open the Terminal
+Open Visual Studio Code and click on the "Terminal" menu at the top, then select "New Terminal" to open a new integrated terminal.
+
+Step 2: Switch to the Main Branch
+Ensure you are on the main branch by running the following command in the terminal:
+
+`git checkout main`
+
+Step 3: Pull Latest Changes
+Before merging, it's a good practice to pull the latest changes from the remote main branch to ensure you have the most up-to-date code:
+
+`git pull origin main`
+
+Step 4: Merge the Branch
+Now, merge the branch you want to merge into the main branch. Suppose you want to merge a branch called "feature-branch" into the main branch:
+
+`git merge feature-branch`
+
+
+Step 5: Resolve Conflicts (if any)
+
+If there are any conflicts between the main branch and the feature branch, you will need to resolve them manually. Visual Studio Code provides a built-in merge conflict resolution tool to help you with this. Open the file with conflicts, and you will see the conflict markers. Edit the file to resolve the conflicts, then save the file.( I did not have conflicts so there was no need for this step)
+
+Step 6: Commit the Merge
+
+After resolving the conflicts, stage the changes and commit the merge:
+
+`git add .`
+
+`git commit -m "Merge feature-branch into main"`
+
+Step 7: Push the Changes
+Finally, push the merged changes to the remote repository:
+
+`git push origin main`
+
+![merge](./images/git-merge.png)
+
+![git](./images/git-merge1.png)
+
+
+I ran `git pull https://github.com/<your-name>/ansible-config-mgt.git` again to pull down the new changes to my terminal.
+
+![git](./images/webserver.png)
+
+Inside roles directory create your new MySQL role with 
+
+`ansible-galaxy install geerlingguy.mysql` and rename the folder to mysql
+
+`mv geerlingguy.mysql/ mysql`
+
+Read README.md file, and edit roles configuration to use correct credentials for MySQL required for the tooling website. Now it is time to upload the changes into your GitHub:
+
+```
+git add .
+git commit -m "Commit new role files into GitHub"
+git push --set-upstream origin roles-feature
+
+```
+
+Another error: I could not push to github.
+
+![authentic](./images/error.png)
+
+Resolution:
+
+`ssh-keygen`
+
+Type enter 3 times
+
+![key](./images/ssh-keygen.png)
+
+- use the cat command to display the key
+
+`cat /home/ubuntu/.ssh/id_rsa.pub`
+
+- copy it and paste in the ssh key section on github
+
+- go to your gitub account settings
+
+![settings](./images/settings.png)
+
+- add an ssh key, paste the key copied earlier and input your password to complete the process
+
+![add](./images/ssh-github.png)
+
+
+![add](./images/new-sshkey.png)
+
+- return to the instance terminal and run the git add and commit and when pushing use this:
+
+```
+git remote set-url origin git@github:<username>/<repo name>
+
+```
+
+- then run:
+
+```
+git push --set-upstream origin roles-feature
+
+```
+
+![end](./images/ssh-end.png)
+
+
+
+
+
+
+
+
+
+
+
+

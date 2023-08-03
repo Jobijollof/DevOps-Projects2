@@ -167,26 +167,28 @@ We used include_vars syntax instead of include, this is because Ansible develope
 
 From Ansible version 2.8, the include module is deprecated and variants of include_* must be used. These are:
 
-include_role (https://docs.ansible.com/ansible/latest/collections/ansible/builtin/include_role_module.html#include-role-module)
+[include_role](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/include_role_module.html#include-role-module)
 
-include_tasks (https://docs.ansible.com/ansible/latest/collections/ansible/builtin/include_tasks_module.html#include-tasks-module)
+[include_tasks](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/include_tasks_module.html#include-tasks-module)
 
-include_vars (https://docs.ansible.com/ansible/latest/collections/ansible/builtin/include_vars_module.html#include-vars-module)
+[include_vars](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/include_vars_module.html#include-vars-module)
 
 In the same version, variants of import were also introduces, such as:
 
-import_role (https://docs.ansible.com/ansible/latest/collections/ansible/builtin/import_role_module.html#import-role-module)
+[import_role](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/import_role_module.html#import-role-module)
 
-import_tasks(https://docs.ansible.com/ansible/latest/collections/ansible/builtin/import_tasks_module.html#import-tasks-module)
+[import_tasks](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/import_tasks_module.html#import-tasks-module)
 
-We made use of (special variables)[https://docs.ansible.com/ansible/latest/reference_appendices/special_variables.html] `{{ playbook_dir }}` and `{{ inventory_file }}`. `{{ playbook_dir }}` will help Ansible to determine the location of the running playbook, and from there navigate to other path on the filesystem.
+We made use of [special variables](https://docs.ansible.com/ansible/latest/reference_appendices/special_variables.html) `{{ playbook_dir }}` and `{{ inventory_file }}`. `{{ playbook_dir }}` will help Ansible to determine the location of the running playbook, and from there navigate to other path on the filesystem.
 
 `{{ inventory_file }}` on the other hand will dynamically resolve to the name of the inventory file being used, then append .yml so that it picks up the required file within the env-vars folder.
 
 We are including the variables using a loop. with_first_found implies that, looping through the list of files, the first one found is used. This is good so that we can always set default values in case an environment specific env file does not exist.
 
 ### Update `site.yml` file with dynamic assignment 
-(At this point, we cannot test it yet We are just setting the stage for what is yet to come. So hang on to your hats) site.yml should now look like this.
+NB At this point, tests cannot be carried out it yet We are just setting the stage for what is yet to come. 
+
+- site.yml should now look like this.
 
 ```
 
@@ -205,7 +207,7 @@ We are including the variables using a loop. with_first_found implies that, loop
 
 ```
 
-### Community Roles
+# Community Roles
 
 Now it is time to create a role for MySQL database – it should install the MySQL package, create a database and configure users.  Why bother going through the stress of creating a role for mysql when we can leverage community roles. There are tons of roles that have already been developed by other open source engineers out there. These roles are actually production ready, and dynamic to accomodate most of Linux flavours. With Ansible Galaxy again, we can simply download a ready to use ansible role, and keep going.
 
@@ -331,6 +333,8 @@ Type enter 3 times
 - use the cat command to display the key
 
 `cat /home/ubuntu/.ssh/id_rsa.pub`
+
+![key](./images/key.png)
 
 - copy it and paste in the ssh key section on github
 
